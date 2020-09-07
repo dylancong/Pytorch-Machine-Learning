@@ -5,7 +5,7 @@ import torch.optim as optim
 from torch.utils.data import Dataset, DataLoader
 import torchvision
 from torchvision import datasets, transforms, utils
-from cifar import CIFAR10
+from dataset import datasetClass
 from pathlib import Path
 import numpy as np
 import matplotlib
@@ -101,7 +101,7 @@ data = data.reshape(-1,3,32,32)
 data = data.transpose((0,2,3,1))
 test_batch_size = 1
 transform = transforms.Compose([transforms.ToTensor()])
-images = CIFAR10(root='./data', train=False,download=True, transform=transform, inputVersion = True)
+images = datasetClass(root='./data', train=False,download=True, transform=transform, inputVersion = True)
 val_loader = torch.utils.data.DataLoader(images, batch_size=test_batch_size, shuffle=False)
 criterion = nn.CrossEntropyLoss()
 classNames = settingReader().getItem("classNames")
