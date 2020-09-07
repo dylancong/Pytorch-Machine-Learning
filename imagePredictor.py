@@ -13,6 +13,7 @@ import matplotlib.pyplot as plt
 import os
 import os.path
 import pickle
+from settingReader import settingReader
 
 
 class CNN(nn.Module):
@@ -103,7 +104,7 @@ transform = transforms.Compose([transforms.ToTensor()])
 images = CIFAR10(root='./data', train=False,download=True, transform=transform, inputVersion = True)
 val_loader = torch.utils.data.DataLoader(images, batch_size=test_batch_size, shuffle=False)
 criterion = nn.CrossEntropyLoss()
-
+classNames = settingReader().getItem("classNames")
 def test(model, test_loader):
     model.eval()
     with torch.no_grad():
@@ -116,7 +117,7 @@ def test(model, test_loader):
             data = data.squeeze()
             data = data.permute(1,2,0)
 
-            print(pred[0].item())
+            print(classNames[pred[0].item()-1])
             torchvision.transforms.ToPILImage()(data)
 
             plt.imshow(data)
