@@ -5,7 +5,7 @@ import numpy as np
 import pickle
 from torchvision.datasets import VisionDataset
 from torchvision.datasets.utils import check_integrity, download_and_extract_archive
-
+from pathlib import Path
 #For Some reason the indexes always go up to 12 times the amount in the image bank
 
 class CIFAR10(VisionDataset):
@@ -47,6 +47,7 @@ class CIFAR10(VisionDataset):
         'md5': '5ff9c542aee3614f3951f8cda6e48888',
     }
    
+    
     def __init__(self, root, train=True, transform=None, target_transform=None,
                  download=False,inputVersion = False):
         print("hello")
@@ -69,10 +70,12 @@ class CIFAR10(VisionDataset):
 
         self.data = []
         self.targets = []
-
+        mod_path = Path(__file__).parent
         # now load the picked numpy arrays
         if inputVersion == True:
-            file_path = os.path.join('/users/games/Desktop/ML/Data/test.pickle')
+            #This setting only adds the test.pickle labels and data
+
+            file_path = (mod_path / "Data/test.pickle").resolve()
             with open(file_path, 'rb') as f:
                 entry = pickle.load(f, encoding='latin1')
                 self.data.append(entry['data'])
@@ -83,14 +86,8 @@ class CIFAR10(VisionDataset):
 
         else:
             for file_name, checksum in downloaded_list:
-                file_path = os.path.join('/Users/games/Desktop/ML/Data', file_name)
-                print("start")
-                print(self.root)
-                print(self.base_folder)
-                print(file_name)
-                print("stop")
-                print(file_path)
-                print("hello")
+                file_path = (mod_path / "Data" / file_name).resolve();
+
                 with open(file_path, 'rb') as f:
                     entry = pickle.load(f, encoding='latin1')
                     self.data.append(entry['data'])
@@ -99,26 +96,14 @@ class CIFAR10(VisionDataset):
                     else:
                         self.targets.extend(entry['fine_labels'])
 
-        print(len(self.data))
-        print('wassupsss')
-
         #vstack changes the length
-        print(len(self.data[0]))
         self.data = np.vstack(self.data)
-        print(len(self.data))
-        print('wassupsss')
         #reshape changes the length
-        print( self.data.shape, "hello")
         self.data = self.data.reshape(-1, 3, 32, 32)
 
-        print(len(self.data))
-        print('wassupsss')
-        print( self.data.shape, "hellos")
         self.data = self.data.transpose((0, 2, 3, 1))  # convert to 
 
-        print(len(self.data))
-        print(self.data)
-        print('wassupsss')
+
 
 
         self._load_meta()
