@@ -5,19 +5,20 @@ from PIL import Image, ImageOps
 import numpy as np
 import pickle
 from pathlib import Path
-
-which = 1
+from settingReader import settingReader
+which = 0
 
 mod_path = Path(__file__).parent
-
-input_dir = (mod_path / "TestingScreenshot").resolve()
-
+settingInfo = settingReader()
+input_dir = (mod_path / settingInfo.getItem("imageFolder")).resolve()
+print(input_dir)
+print(type(input_dir))
 if which == 1:
-	input_dir = (mod_path / "TestingScreenshot").resolve()
+	input_dir = (mod_path / settingInfo.getItem("imageFolder")).resolve()
 
 directories = os.listdir(input_dir)
 print(os.getcwd() + "elll")
-
+mod_path = (mod_path / "Data").resolve()
 #Directory containing images you wish to convert
 
 
@@ -49,8 +50,7 @@ for folder in directories[0:10]:
 		#Iterating through first 100% of images in folder for train data
 		for image in folder2[0:int(len_images80)]:
 
-			print(image + "hello")
-			print(image)
+
 			if image == ".DS_Store":
 				pass
 
@@ -151,7 +151,7 @@ dictTrain = {}
 dictTrain['batch_label']= 'training batch 1 of 5'
 dictTrain['labels'] = index_array
 dictTrain['data'] = out
-print(dictTrain)
+
 
 # index_array_test=index_array_test.ravel()
 # dictTest = dict(zip(index_array_test,out_test))
@@ -160,31 +160,31 @@ print(dictTrain)
 # INDEXING IS OFF BY ONE
 
 if which == 0:
-	with open(os.path.join('/Users/games/Desktop/ML/Data','one.pickle'),'wb') as handle:
+	with open((mod_path / 'one.pickle').resolve(),'wb') as handle:
 		pickle.dump(dictTrain, handle, protocol = pickle.HIGHEST_PROTOCOL) #Saving train image arrays and labels in a dict
-	with open(os.path.join('/Users/games/Desktop/ML/Data','two.pickle'),'wb') as handle:
+	with open((mod_path / 'two.pickle').resolve(),'wb') as handle:
 		pickle.dump(dictTrain, handle, protocol = pickle.HIGHEST_PROTOCOL) #Saving train image arrays and labels in a dict
-	with open(os.path.join('/Users/games/Desktop/ML/Data','three.pickle'),'wb') as handle:
+	with open((mod_path / 'three.pickle').resolve(),'wb') as handle:
 		pickle.dump(dictTrain, handle, protocol = pickle.HIGHEST_PROTOCOL) #Saving train image arrays and labels in a dict
-	with open(os.path.join('/Users/games/Desktop/ML/Data','four.pickle'),'wb') as handle:
+	with open((mod_path / 'four.pickle').resolve(),'wb') as handle:
 		pickle.dump(dictTrain, handle, protocol = pickle.HIGHEST_PROTOCOL) #Saving train image arrays and labels in a dict
-	with open(os.path.join('/Users/games/Desktop/ML/Data','five.pickle'),'wb') as handle:
+	with open((mod_path / 'five.pickle').resolve(),'wb') as handle:
 		pickle.dump(dictTrain, handle, protocol = pickle.HIGHEST_PROTOCOL) #Saving train image arrays and labels in a dict
-	with open(os.path.join('/Users/games/Desktop/ML/Data','test.pickle'),'wb') as handle:
+	with open((mod_path / 'test.pickle').resolve(),'wb') as handle:
 		pickle.dump(dictTrain, handle, protocol = pickle.HIGHEST_PROTOCOL) #Saving train image arrays and labels in a dict
 elif which == 1:
-	with open(os.path.join('/Users/games/Desktop/ML/Data','test.pickle'),'wb') as handle:
+	with open((mod_path / 'test.pickle').resolve(),'wb') as handle:
 		pickle.dump(dictTrain, handle, protocol = pickle.HIGHEST_PROTOCOL) #Saving train image arrays and labels in a dict
 elif which == 3:
-	with open(os.path.join('/Users/games/Desktop/ML/Data','one.pickle'),'wb') as handle:
+	with open((mod_path / 'one.pickle').resolve(),'wb') as handle:
 		pickle.dump(dictTrain, handle, protocol = pickle.HIGHEST_PROTOCOL) #Saving train image arrays and labels in a dict
-	with open(os.path.join('/Users/games/Desktop/ML/Data','two.pickle'),'wb') as handle:
+	with open((mod_path / 'two.pickle').resolve(),'wb') as handle:
 		pickle.dump(dictTrain, handle, protocol = pickle.HIGHEST_PROTOCOL) #Saving train image arrays and labels in a dict
-	with open(os.path.join('/Users/games/Desktop/ML/Data','three.pickle'),'wb') as handle:
+	with open((mod_path / 'three.pickle').resolve(),'wb') as handle:
 		pickle.dump(dictTrain, handle, protocol = pickle.HIGHEST_PROTOCOL) #Saving train image arrays and labels in a dict
-	with open(os.path.join('/Users/games/Desktop/ML/Data','four.pickle'),'wb') as handle:
+	with open((mod_path / 'four.pickle').resolve(),'wb') as handle:
 		pickle.dump(dictTrain, handle, protocol = pickle.HIGHEST_PROTOCOL) #Saving train image arrays and labels in a dict
-	with open(os.path.join('/Users/games/Desktop/ML/Data','five.pickle'),'wb') as handle:
+	with open((mod_path / 'five.pickle').resolve(),'wb') as handle:
 		pickle.dump(dictTrain, handle, protocol = pickle.HIGHEST_PROTOCOL) #Saving train image arrays and labels in a dict
 # with open(os.path.join('/Users/games/Desktop/ML','X_Test.pickle'),'wb') as handle:
 # 	pickle.dump(dictTest, handle, protocol = pickle.HIGHEST_PROTOCOL) #Saving test image arrays and labels in a dict
