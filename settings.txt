@@ -1,0 +1,13 @@
+Hello
+This is testing
+~S~Setting = One
+~T~dict = One,Two,Three,Four
+~B~boolean = True
+
+
+
+
+
+
+
+This is the end of the file
