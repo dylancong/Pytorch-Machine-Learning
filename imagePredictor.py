@@ -78,15 +78,15 @@ class CNN(nn.Module):
         x = self.fc_layer(x)
 
         return x
-
-path = Path('/Users/games/Desktop/ML/path.pth')
+mod_path = Path(__file__).parent
+path = (mod_path / "path.pth").resolve()
 
 
 model = CNN()
 model.load_state_dict(torch.load(path))
 model.eval()
 data = []
-file_path = os.path.join('/Users/games/Desktop/ML/Data/test.pickle')
+file_path = (mod_path / "Data" / "test.pickle")
 with open(file_path, 'rb') as f:
     entry = pickle.load(f, encoding='latin1')
     data.append(entry['data'])
@@ -100,7 +100,7 @@ data = data.reshape(-1,3,32,32)
 data = data.transpose((0,2,3,1))
 test_batch_size = 1
 transform = transforms.Compose([transforms.ToTensor()])
-images = CIFAR10(root='./data', train=False,download=True, transform=transform,inputVersion = True)
+images = CIFAR10(root='./data', train=False,download=True, transform=transform, inputVersion = True)
 val_loader = torch.utils.data.DataLoader(images, batch_size=test_batch_size, shuffle=False)
 criterion = nn.CrossEntropyLoss()
 
@@ -108,10 +108,18 @@ def test(model, test_loader):
     model.eval()
     with torch.no_grad():
         for data, target in test_loader:
-            # print(data)
+            
+
             # print(target)
             output = model(data)
             _, pred = output.max(1)
+            data = data.squeeze()
+            data = data.permute(1,2,0)
+
             print(pred[0].item())
+            torchvision.transforms.ToPILImage()(data)
+
+            plt.imshow(data)
+            
     
 test(model,val_loader)
