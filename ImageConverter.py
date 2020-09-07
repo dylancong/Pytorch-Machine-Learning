@@ -7,10 +7,13 @@ import pickle
 from pathlib import Path
 
 which = 1
-input_dir = Path("/Users/games/Desktop/ML/TestingScreenshot")
+
+mod_path = Path(__file__).parent
+
+input_dir = (mod_path / "TestingScreenshot").resolve()
 
 if which == 1:
-	input_dir = Path("/Users/games/Desktop/ML/TestScreen")
+	input_dir = (mod_path / "TestingScreenshot").resolve()
 
 directories = os.listdir(input_dir)
 print(os.getcwd() + "elll")
