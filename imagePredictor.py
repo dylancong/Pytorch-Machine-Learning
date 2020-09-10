@@ -8,12 +8,11 @@ from torchvision import datasets, transforms, utils
 from dataset import datasetClass
 from pathlib import Path
 import numpy as np
-import matplotlib
-import matplotlib.pyplot as plt
 import os
 import os.path
 import pickle
 from settingReader import settingReader
+import matplotlib.pyplot as plt
 
 
 class CNN(nn.Module):
@@ -100,6 +99,8 @@ data = np.vstack(data)
 data = data.reshape(-1,3,32,32)
 data = data.transpose((0,2,3,1))
 test_batch_size = 1
+numberOfPics = data.shape[0]
+
 transform = transforms.Compose([transforms.ToTensor()])
 images = datasetClass(root='./data', train=False,download=True, transform=transform, inputVersion = True)
 val_loader = torch.utils.data.DataLoader(images, batch_size=test_batch_size, shuffle=False)
@@ -108,19 +109,24 @@ classNames = settingReader().getItem("classNames")
 def test(model, test_loader):
     model.eval()
     with torch.no_grad():
+        count = 0
         for data, target in test_loader:
+            count+=1
             
 
             # print(target)
             output = model(data)
             _, pred = output.max(1)
-            data = data.squeeze()
-            data = data.permute(1,2,0)
-
-            print(classNames[pred[0].item()-1])
-            torchvision.transforms.ToPILImage()(data)
-
+            data = data.numpy().squeeze()
+            data = data.transpose((1,2,0))
+            sp = plt.subplot(4, 3, count)
+            sp.axis("Off")
             plt.imshow(data)
+            sp.set_title(classNames[pred[0]-1])
+            plt.tight_layout()
+            
+        plt.show()
+            
             
     
 test(model,val_loader)
